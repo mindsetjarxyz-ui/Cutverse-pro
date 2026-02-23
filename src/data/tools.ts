@@ -20,6 +20,7 @@ import {
   Instagram,
   UserCheck,
   Music,
+  FileAudio,
   LucideIcon
 } from 'lucide-react';
 
@@ -186,6 +187,13 @@ export const tools: Tool[] = [
     title: 'Text to Music',
     description: 'Generate stunning music from text descriptions',
     icon: Music,
+    category: 'utility'
+  },
+  {
+    id: 'wav-to-mp3',
+    title: 'WAV to MP3 Converter',
+    description: 'Convert WAV audio files to MP3 format',
+    icon: FileAudio,
     category: 'utility'
   }
 ];

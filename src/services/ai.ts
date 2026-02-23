@@ -289,3 +289,89 @@ export async function generateMusic(prompt: string): Promise<{ error: string | n
     return { error: err.message || 'Failed to generate music. Please try again.', output: '' };
   }
 }
+
+// WAV to MP3 Conversion using Bytez SDK
+export async function convertWavToMp3(file: File): Promise<{ error: string | null; output: string }> {
+  try {
+    // Validate file
+    if (!file) {
+      return { error: 'No file provided', output: '' };
+    }
+
+    if (file.type !== 'audio/wav' && !file.name.toLowerCase().endsWith('.wav')) {
+      return { error: 'Please provide a valid WAV file', output: '' };
+    }
+
+    // Convert file to base64
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Extract base64 part after the comma
+        const base64String = result.split(',')[1];
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    // Choose audio conversion model
+    const model = sdk.model("openai/whisper-1");
+    
+    // For now, we'll use a simpler approach - convert WAV to MP3 using FFmpeg via Bytez
+    // Send the base64 WAV data with instruction to convert to MP3
+    const result = await model.run({
+      task: "convert",
+      format: "mp3",
+      audio: base64,
+      inputFormat: "wav"
+    });
+
+    if (result.error) {
+      console.error('Bytez API error:', result.error);
+      return { error: String(result.error), output: '' };
+    }
+
+    // Handle different response formats
+    let mp3Data = '';
+
+    if (result.output instanceof Blob) {
+      mp3Data = URL.createObjectURL(result.output);
+    } else if (typeof result.output === 'string') {
+      mp3Data = result.output;
+    } else if (result.output?.audio) {
+      mp3Data = result.output.audio;
+    } else if (result.output?.url) {
+      mp3Data = result.output.url;
+    } else if (result.output?.file) {
+      mp3Data = result.output.file;
+    } else if (result.output?.base64) {
+      mp3Data = `data:audio/mpeg;base64,${result.output.base64}`;
+    } else if (Array.isArray(result.output) && result.output.length > 0) {
+      const firstItem = result.output[0];
+      if (firstItem instanceof Blob) {
+        mp3Data = URL.createObjectURL(firstItem);
+      } else if (typeof firstItem === 'string') {
+        mp3Data = firstItem;
+      } else if (firstItem?.url) {
+        mp3Data = firstItem.url;
+      } else if (firstItem?.audio) {
+        mp3Data = firstItem.audio;
+      }
+    }
+
+    // Ensure proper data URI format for base64 if needed
+    if (mp3Data && !mp3Data.startsWith('http') && !mp3Data.startsWith('data:') && !mp3Data.startsWith('blob:')) {
+      mp3Data = `data:audio/mpeg;base64,${mp3Data}`;
+    }
+
+    if (!mp3Data) {
+      return { error: 'No converted audio received from API', output: '' };
+    }
+
+    return { error: null, output: mp3Data };
+  } catch (err: any) {
+    console.error('WAV to MP3 conversion error:', err);
+    return { error: err.message || 'Failed to convert WAV to MP3. Please try again.', output: '' };
+  }
+}
