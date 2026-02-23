@@ -123,6 +123,7 @@ function WavToMp3Tool() {
   const [loading, setLoading] = useState(false);
   const [mp3Url, setMp3Url] = useState('');
   const [fileName, setFileName] = useState('');
+  const [conversionStatus, setConversionStatus] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,15 +137,15 @@ function WavToMp3Tool() {
 
     // Validate file type
     if (file.type !== 'audio/wav' && !file.name.toLowerCase().endsWith('.wav')) {
-      setError('Please select a valid WAV file');
+      setError('❌ Please select a valid WAV file');
       setSelectedFile(null);
       fileInputRef.current!.value = '';
       return;
     }
 
-    // Validate file size (max 50MB)
-    if (file.size > 50 * 1024 * 1024) {
-      setError('File size must be less than 50MB');
+    // Validate file size (max 100MB for FFmpeg)
+    if (file.size > 100 * 1024 * 1024) {
+      setError('❌ File size must be less than 100MB');
       setSelectedFile(null);
       fileInputRef.current!.value = '';
       return;
@@ -153,33 +154,40 @@ function WavToMp3Tool() {
     setSelectedFile(file);
     setError('');
     setMp3Url('');
+    setConversionStatus('');
   };
 
   const handleConvert = async () => {
     if (!selectedFile) {
-      setError('Please select a WAV file first');
+      setError('❌ Please select a WAV file first');
       return;
     }
 
     setLoading(true);
     setError('');
     setMp3Url('');
+    setConversionStatus('⏳ Initializing converter...');
 
     try {
+      setConversionStatus('⏳ Processing audio file...');
       const result = await convertWavToMp3(selectedFile);
 
       if (result.error) {
-        setError(result.error);
+        setError('❌ ' + result.error);
         setMp3Url('');
+        setConversionStatus('');
       } else {
         setMp3Url(result.output);
         // Extract filename without extension and add .mp3
         const baseName = selectedFile.name.replace(/\.[^/.]+$/, '');
         setFileName(`${baseName}.mp3`);
+        setConversionStatus('✅ Conversion complete!');
+        setError('');
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to convert file. Please try again.');
+      setError('❌ ' + (err.message || 'Failed to convert file. Please try again.'));
       setMp3Url('');
+      setConversionStatus('');
     } finally {
       setLoading(false);
     }
@@ -214,27 +222,27 @@ function WavToMp3Tool() {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full px-6 py-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border-2 border-dashed border-blue-500/50 rounded-xl hover:border-blue-500 transition-all duration-200 cursor-pointer text-slate-300 hover:text-white font-medium"
+              className="w-full px-6 py-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border-2 border-dashed border-blue-500/50 rounded-xl hover:border-blue-500 transition-all duration-200 cursor-pointer text-slate-300 hover:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
               <div className="flex items-center justify-center gap-2">
                 <Upload className="w-5 h-5" />
-                {selectedFile ? `${selectedFile.name}` : 'Click to upload or drag WAV file'}
+                {selectedFile ? `📄 ${selectedFile.name}` : '📤 Click to upload or drag WAV file'}
               </div>
             </button>
           </div>
           <p className="text-xs text-slate-400 mt-2">
-            Supported format: WAV (max 50MB)
+            Supported format: WAV (max 100MB)
           </p>
         </div>
 
-        {selectedFile && (
+        {selectedFile && !mp3Url && (
           <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
             <p className="text-sm text-slate-300">
-              <strong>File:</strong> {selectedFile.name}
+              <strong>📁 File:</strong> {selectedFile.name}
             </p>
             <p className="text-sm text-slate-400 mt-1">
-              <strong>Size:</strong> {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+              <strong>📊 Size:</strong> {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
             </p>
           </div>
         )}
@@ -250,10 +258,16 @@ function WavToMp3Tool() {
               Converting...
             </>
           ) : (
-            'Convert to MP3'
+            '🎵 Convert to MP3'
           )}
         </Button>
       </div>
+
+      {conversionStatus && (
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-blue-300 text-sm">
+          {conversionStatus}
+        </div>
+      )}
 
       {error && (
         <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 text-red-400 text-sm">
@@ -267,7 +281,7 @@ function WavToMp3Tool() {
           <p className="text-slate-300 mb-4">Your file has been successfully converted to MP3.</p>
           
           <div className="mb-4">
-            <p className="text-sm text-slate-400 mb-2">Preview:</p>
+            <p className="text-sm text-slate-400 mb-2">🎵 Preview:</p>
             <audio
               controls
               className="w-full rounded-lg"
@@ -282,7 +296,7 @@ function WavToMp3Tool() {
             className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
           >
             <Download className="w-4 h-4 mr-2" />
-            Download MP3 ({fileName})
+            📥 Download MP3 ({fileName})
           </Button>
         </div>
       )}
