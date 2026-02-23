@@ -3,7 +3,7 @@
 
 import Bytez from "bytez.js";
 
-const API_KEY = "cd8fe321d2c8864355dcc151f435f41f";
+const API_KEY = "587f326079d22030bfcac35124690e14";
 
 // Initialize Bytez SDK
 const sdk = new Bytez(API_KEY);
@@ -287,96 +287,5 @@ export async function generateMusic(prompt: string): Promise<{ error: string | n
   } catch (err: any) {
     console.error('Music generation error:', err);
     return { error: err.message || 'Failed to generate music. Please try again.', output: '' };
-  }
-}
-
-// FFmpeg instance (will be loaded on demand)
-let ffmpegInstance: any = null;
-
-// Initialize FFmpeg
-async function initFFmpeg() {
-  if (ffmpegInstance && ffmpegInstance.isLoaded()) {
-    return ffmpegInstance;
-  }
-
-  try {
-    const FFmpeg = (await import('@ffmpeg/ffmpeg')).FFmpeg;
-    const { fetchFile } = await import('@ffmpeg/util');
-    
-    ffmpegInstance = new FFmpeg();
-    
-    if (!ffmpegInstance.isLoaded()) {
-      await ffmpegInstance.load();
-    }
-    
-    return ffmpegInstance;
-  } catch (error) {
-    console.error('Failed to load FFmpeg:', error);
-    throw new Error('Failed to initialize audio converter. Please refresh the page and try again.');
-  }
-}
-
-// WAV to MP3 Conversion using FFmpeg.wasm
-export async function convertWavToMp3(file: File): Promise<{ error: string | null; output: string }> {
-  try {
-    // Validate file
-    if (!file) {
-      return { error: 'No file provided', output: '' };
-    }
-
-    if (file.type !== 'audio/wav' && !file.name.toLowerCase().endsWith('.wav')) {
-      return { error: 'Please provide a valid WAV file', output: '' };
-    }
-
-    // Initialize FFmpeg
-    const ffmpeg = await initFFmpeg();
-
-    // Write the WAV file to FFmpeg filesystem
-    const inputFileName = 'input.wav';
-    const outputFileName = 'output.mp3';
-
-    // Convert file to Uint8Array
-    const fileBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(fileBuffer);
-
-    // Write input file to FFmpeg
-    ffmpeg.writeFile(inputFileName, uint8Array);
-
-    // Run FFmpeg command to convert WAV to MP3
-    // -i input.wav: input file
-    // -q:a 4: audio quality (lower is better, 4 is good quality)
-    // output.mp3: output file
-    await ffmpeg.exec(['-i', inputFileName, '-q:a', '4', outputFileName]);
-
-    // Read the output MP3 file
-    const outputData = ffmpeg.readFile(outputFileName) as Uint8Array;
-
-    // Create a blob from the output data
-    const mp3Blob = new Blob([outputData], { type: 'audio/mpeg' });
-    const mp3Url = URL.createObjectURL(mp3Blob);
-
-    // Clean up - delete files from FFmpeg filesystem
-    ffmpeg.deleteFile(inputFileName);
-    ffmpeg.deleteFile(outputFileName);
-
-    if (!mp3Url) {
-      return { error: 'Failed to convert audio file', output: '' };
-    }
-
-    return { error: null, output: mp3Url };
-  } catch (err: any) {
-    console.error('WAV to MP3 conversion error:', err);
-    
-    // Provide helpful error messages
-    let errorMsg = 'Failed to convert WAV to MP3. ';
-    if (err.message?.includes('Failed to initialize')) {
-      errorMsg += 'The converter is initializing. Please try again in a moment.';
-    } else if (err.message?.includes('network')) {
-      errorMsg += 'Network error. Please check your internet connection.';
-    } else {
-      errorMsg += 'Please try with a different file.';
-    }
-    
-    return { error: errorMsg, output: '' };
   }
 }
