@@ -114,14 +114,14 @@ export const tools: Tool[] = [
   },
   {
     id: 'easy-grammar',
-    title: '✨ GrammarGenius',
-    description: 'Learn grammar rules, write flawlessly, and master English with AI assistance',
+    title: 'Grammar for Students',
+    description: 'Learn and understand grammar rules with professional explanations and examples',
     icon: BookMarked,
     category: 'student'
   },
   {
     id: 'ai-math-solver',
-    title: '🧮 MathMaster AI',
+    title: 'Math Solver',
     description: 'Solve math problems in English or Bangla with detailed step-by-step solutions',
     icon: Calculator,
     category: 'student'
