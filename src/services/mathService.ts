@@ -52,7 +52,7 @@ function getLanguageInstruction(language: string): string {
 // Solve math problem
 export async function solveMathProblem(question: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
-    const model = mathSdk.model("openai/gpt-4.1");
+    const model = mathSdk.model("openai/gpt-4o");
     
     // Auto-detect language if requested
     let targetLanguage = language;
@@ -112,7 +112,7 @@ Be clear, professional, and educational. Show all working and calculations.`;
 // Explain math concept
 export async function explainMathConcept(concept: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
-    const model = mathSdk.model("openai/gpt-4.1");
+    const model = mathSdk.model("openai/gpt-4o");
     
     let targetLanguage = language;
     if (language === 'auto') {
@@ -172,7 +172,7 @@ Be thorough, clear, and educational.`;
 // Generate practice problems
 export async function generateMathProblems(topic: string, level: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
-    const model = mathSdk.model("openai/gpt-4.1");
+    const model = mathSdk.model("openai/gpt-4o");
     
     let targetLanguage = language;
     if (language === 'auto') {
@@ -229,7 +229,7 @@ Make them challenging but educational.`;
 // Quick calculation
 export async function quickMathSolve(question: string): Promise<MathResponse> {
   try {
-    const model = mathSdk.model("openai/gpt-4.1");
+    const model = mathSdk.model("openai/gpt-4o");
     
     const targetLanguage = detectLanguage(question);
     

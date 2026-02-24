@@ -37,7 +37,7 @@ function formatGrammarText(text: string): string {
 // Get grammar rules
 export async function getGrammarRule(ruleName: string): Promise<GrammarResponse> {
   try {
-    const model = grammarSdk.model("openai/gpt-4.1");
+    const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, explain the grammar rule: "${ruleName}"
     
@@ -81,7 +81,7 @@ export async function getGrammarRule(ruleName: string): Promise<GrammarResponse>
 // Correct text for grammar
 export async function correctGrammar(text: string): Promise<GrammarResponse> {
   try {
-    const model = grammarSdk.model("openai/gpt-4.1");
+    const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar editor, analyze and correct the following text:
 
@@ -127,7 +127,7 @@ Be professional and helpful in your response.`;
 // Get detailed explanation
 export async function explainGrammar(text: string): Promise<GrammarResponse> {
   try {
-    const model = grammarSdk.model("openai/gpt-4.1");
+    const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, provide a detailed explanation of the grammar in this sentence:
 
@@ -174,7 +174,7 @@ Be clear and educational.`;
 // Generate grammar exercise
 export async function generateGrammarExercise(topic: string, level: string): Promise<GrammarResponse> {
   try {
-    const model = grammarSdk.model("openai/gpt-4.1");
+    const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, create a grammar exercise for ${level} level students on the topic: "${topic}"
 

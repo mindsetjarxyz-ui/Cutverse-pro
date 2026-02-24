@@ -133,16 +133,19 @@ export function MathTool({ toolId }: MathToolProps) {
       case 'solve':
         return (
           <>
-            <div className="space-y-4">
+            <div className="w-full space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
                   Math Problem (Detailed Solution)
                 </label>
-                <TextArea
+                <textarea
                   value={input}
-                  onChange={setInput}
+                  onChange={(e) => setInput(e.target.value)}
+                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter your math problem here..."
-                  rows={5}
+                  rows={4}
+                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
+                  style={{ minHeight: '100px' }}
                 />
               </div>
               <div>
@@ -155,8 +158,8 @@ export function MathTool({ toolId }: MathToolProps) {
               </div>
               <Button
                 onClick={handleSolveProblem}
-                disabled={loading}
-                className="w-full"
+                disabled={loading || !input.trim()}
+                className="w-full py-2.5 sm:py-3 text-sm sm:text-base"
               >
                 {loading ? (
                   <>
@@ -164,7 +167,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Solving...
                   </>
                 ) : (
-                  '🧮 Solve with Steps'
+                  'Solve with Steps'
                 )}
               </Button>
             </div>
@@ -174,16 +177,19 @@ export function MathTool({ toolId }: MathToolProps) {
       case 'concept':
         return (
           <>
-            <div className="space-y-4">
+            <div className="w-full space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
                   Math Concept (e.g., Quadratic Equations, Trigonometry)
                 </label>
-                <TextArea
+                <textarea
                   value={input}
-                  onChange={setInput}
+                  onChange={(e) => setInput(e.target.value)}
+                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter a math concept..."
                   rows={3}
+                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
+                  style={{ minHeight: '80px' }}
                 />
               </div>
               <div>
@@ -196,8 +202,8 @@ export function MathTool({ toolId }: MathToolProps) {
               </div>
               <Button
                 onClick={handleExplainConcept}
-                disabled={loading}
-                className="w-full"
+                disabled={loading || !input.trim()}
+                className="w-full py-2.5 sm:py-3 text-sm sm:text-base"
               >
                 {loading ? (
                   <>
@@ -205,7 +211,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Explaining...
                   </>
                 ) : (
-                  '📚 Explain Concept'
+                  'Explain Concept'
                 )}
               </Button>
             </div>
@@ -215,19 +221,22 @@ export function MathTool({ toolId }: MathToolProps) {
       case 'practice':
         return (
           <>
-            <div className="space-y-4">
+            <div className="w-full space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
                   Topic (e.g., Algebra, Geometry, Calculus)
                 </label>
-                <TextArea
+                <textarea
                   value={input}
-                  onChange={setInput}
+                  onChange={(e) => setInput(e.target.value)}
+                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter a topic..."
                   rows={3}
+                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
+                  style={{ minHeight: '80px' }}
                 />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Select
                   options={levelOptions}
                   value={level}
@@ -243,8 +252,8 @@ export function MathTool({ toolId }: MathToolProps) {
               </div>
               <Button
                 onClick={handleGeneratePractice}
-                disabled={loading}
-                className="w-full"
+                disabled={loading || !input.trim()}
+                className="w-full py-2.5 sm:py-3 text-sm sm:text-base"
               >
                 {loading ? (
                   <>
@@ -252,7 +261,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Generating...
                   </>
                 ) : (
-                  '📝 Generate Problems'
+                  'Generate Problems'
                 )}
               </Button>
             </div>
@@ -262,22 +271,25 @@ export function MathTool({ toolId }: MathToolProps) {
       case 'quick':
         return (
           <>
-            <div className="space-y-4">
+            <div className="w-full space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
                   Quick Math Problem
                 </label>
-                <TextArea
+                <textarea
                   value={input}
-                  onChange={setInput}
+                  onChange={(e) => setInput(e.target.value)}
+                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Ask a quick math question..."
                   rows={3}
+                  className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
+                  style={{ minHeight: '80px' }}
                 />
               </div>
               <Button
                 onClick={handleQuickSolve}
-                disabled={loading}
-                className="w-full"
+                disabled={loading || !input.trim()}
+                className="w-full py-2.5 sm:py-3 text-sm sm:text-base"
               >
                 {loading ? (
                   <>
@@ -285,7 +297,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Calculating...
                   </>
                 ) : (
-                  '⚡ Quick Answer'
+                  'Quick Answer'
                 )}
               </Button>
             </div>
@@ -295,15 +307,15 @@ export function MathTool({ toolId }: MathToolProps) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Mode Selector */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+    <div className="w-full space-y-4 sm:space-y-6 px-0">
+      {/* Mode Selector - Stack on mobile, grid on larger screens */}
+      <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-2">
         {[
-          { id: 'solve', label: '🧮 Solve', icon: '🧮' },
-          { id: 'concept', label: '📚 Concept', icon: '📚' },
-          { id: 'practice', label: '📝 Practice', icon: '📝' },
-          { id: 'quick', label: '⚡ Quick', icon: '⚡' },
-        ].map(btn => (
+          { id: 'solve', label: 'Solve', shortLabel: 'S' },
+          { id: 'concept', label: 'Concept', shortLabel: 'C' },
+          { id: 'practice', label: 'Practice', shortLabel: 'P' },
+          { id: 'quick', label: 'Quick', shortLabel: 'Q' },
+        ].map((btn) => (
           <button
             key={btn.id}
             onClick={() => {
@@ -311,28 +323,30 @@ export function MathTool({ toolId }: MathToolProps) {
               setInput('');
               setResult('');
             }}
-            className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
               mode === btn.id
                 ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
                 : 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50'
             }`}
           >
             <span className="hidden sm:inline">{btn.label}</span>
-            <span className="sm:hidden">{btn.icon}</span>
+            <span className="sm:hidden text-xs">{btn.shortLabel}</span>
           </button>
         ))}
       </div>
 
       {/* Input Section */}
-      <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 sm:p-6">
+      <div className="w-full bg-slate-800/30 border border-slate-700/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
         {renderModeContent()}
       </div>
 
       {/* Result Section */}
       {result && (
-        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">✨ Solution</h3>
-          <ResultBox content={result} />
+        <div className="w-full bg-slate-800/30 border border-slate-700/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3 sm:mb-4">Solution</h3>
+          <div className="overflow-x-auto">
+            <ResultBox content={result} />
+          </div>
         </div>
       )}
 
@@ -340,17 +354,19 @@ export function MathTool({ toolId }: MathToolProps) {
         <div className="flex justify-center items-center py-12">
           <div className="text-center">
             <Loader className="w-8 h-8 animate-spin text-purple-400 mx-auto mb-4" />
-            <p className="text-slate-400">Processing your request...</p>
+            <p className="text-sm sm:text-base text-slate-400">Processing...</p>
           </div>
         </div>
       )}
 
       {/* Info Box */}
-      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-        <p className="text-xs sm:text-sm text-blue-200">
-          💡 <strong>Tip:</strong> You can ask questions in both English and Bangla. The AI will respond in your preferred language and provide detailed, step-by-step solutions.
-        </p>
-      </div>
+      {!result && !loading && (
+        <div className="w-full bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-blue-200 leading-relaxed">
+            Ask questions in English or Bangla. The AI responds in your preferred language with detailed, step-by-step solutions.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -43,29 +43,32 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-4 sm:space-y-6 px-0">
       {/* Input Section */}
-      <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 sm:p-6">
-        <div className="space-y-4">
-          <div>
+      <div className="w-full bg-slate-800/30 border border-slate-700/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+        <div className="w-full space-y-3 sm:space-y-4">
+          <div className="w-full">
             <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
               Ask about Grammar Rule
             </label>
-            <p className="text-xs text-slate-400 mb-3">
-              Examples: Present Perfect Tense, Subject-Verb Agreement, Articles, Prepositions, Conditional Sentences
+            <p className="text-xs text-slate-400 mb-3 leading-relaxed">
+              Examples: Present Perfect Tense, Subject-Verb Agreement, Articles, Prepositions
             </p>
-            <TextArea
+            <textarea
               value={input}
-              onChange={setInput}
+              onChange={(e) => setInput(e.target.value)}
+              onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
               placeholder="Enter your grammar question here..."
               rows={4}
+              className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
+              style={{ minHeight: '100px' }}
             />
           </div>
-          <div className="flex gap-2">
+          <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-3">
             <Button
               onClick={handleAskGrammar}
-              disabled={loading}
-              className="flex-1"
+              disabled={loading || !input.trim()}
+              className="w-full sm:flex-1 py-2.5 sm:py-3 text-sm sm:text-base"
             >
               {loading ? (
                 <>
@@ -79,7 +82,7 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
             <Button
               onClick={handleClear}
               disabled={loading}
-              className="bg-slate-700/50 hover:bg-slate-600/50 text-slate-300"
+              className="w-full sm:flex-1 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-700/50 hover:bg-slate-600/50 text-slate-300"
             >
               Clear
             </Button>
@@ -89,9 +92,11 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
 
       {/* Result Section */}
       {result && (
-        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">Answer</h3>
-          <ResultBox content={result} />
+        <div className="w-full bg-slate-800/30 border border-slate-700/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3 sm:mb-4">Answer</h3>
+          <div className="overflow-x-auto">
+            <ResultBox content={result} />
+          </div>
         </div>
       )}
 
@@ -99,14 +104,14 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
         <div className="flex justify-center items-center py-12">
           <div className="text-center">
             <Loader className="w-8 h-8 animate-spin text-blue-400 mx-auto mb-4" />
-            <p className="text-slate-400">Finding the answer...</p>
+            <p className="text-sm sm:text-base text-slate-400">Finding the answer...</p>
           </div>
         </div>
       )}
 
       {!result && !loading && (
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-          <p className="text-xs sm:text-sm text-blue-200">
+        <div className="w-full bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-blue-200 leading-relaxed">
             Ask any grammar question and get a professional explanation with examples. Try asking about tenses, articles, prepositions, or any grammar rule you want to understand.
           </p>
         </div>
