@@ -141,7 +141,6 @@ export function MathTool({ toolId }: MathToolProps) {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter your math problem here..."
                   rows={4}
                   className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
@@ -167,7 +166,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Solving...
                   </>
                 ) : (
-                  'Solve with Steps'
+                  'Generate (1 ad for every 3 generations)'
                 )}
               </Button>
             </div>
@@ -185,7 +184,6 @@ export function MathTool({ toolId }: MathToolProps) {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter a math concept..."
                   rows={3}
                   className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
@@ -211,7 +209,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Explaining...
                   </>
                 ) : (
-                  'Explain Concept'
+                  'Generate (1 ad for every 3 generations)'
                 )}
               </Button>
             </div>
@@ -229,7 +227,6 @@ export function MathTool({ toolId }: MathToolProps) {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Enter a topic..."
                   rows={3}
                   className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
@@ -261,7 +258,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Generating...
                   </>
                 ) : (
-                  'Generate Problems'
+                  'Generate (1 ad for every 3 generations)'
                 )}
               </Button>
             </div>
@@ -279,7 +276,6 @@ export function MathTool({ toolId }: MathToolProps) {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
                   placeholder="Ask a quick math question..."
                   rows={3}
                   className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
@@ -297,7 +293,7 @@ export function MathTool({ toolId }: MathToolProps) {
                     Calculating...
                   </>
                 ) : (
-                  'Quick Answer'
+                  'Generate (1 ad for every 3 generations)'
                 )}
               </Button>
             </div>

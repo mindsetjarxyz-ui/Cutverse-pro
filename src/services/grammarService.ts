@@ -1,7 +1,6 @@
-// Grammar Tool Service - GrammarGenius
-// Using Bytez SDK with separate API key
-
+// Grammar Tool Service - Using Bytez SDK with GPT-4o
 import Bytez from "bytez.js";
+import { checkAndUpdateAdCounter, openAdInNewTab } from "./adService";
 
 const GRAMMAR_API_KEY = "834eee539e51ef483544d18320a06111";
 
@@ -25,10 +24,9 @@ export interface GrammarResponse {
 function formatGrammarText(text: string): string {
   if (!text) return '';
   
-  // Remove special characters that might cause issues
   let cleaned = text
     .replace(/\*/g, '•')
-    .replace(/#{1,6}\s/g, '') // Remove markdown headers
+    .replace(/#{1,6}\s/g, '')
     .trim();
   
   return cleaned;
@@ -37,6 +35,12 @@ function formatGrammarText(text: string): string {
 // Get grammar rules
 export async function getGrammarRule(ruleName: string): Promise<GrammarResponse> {
   try {
+    // Check ad counter and open ad if needed
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, explain the grammar rule: "${ruleName}"
@@ -49,24 +53,24 @@ export async function getGrammarRule(ruleName: string): Promise<GrammarResponse>
     
     Format the response clearly with sections and examples.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatGrammarText(output as string),
+      result: formatGrammarText(response.output as string),
       error: undefined
     };
   } catch (err) {
@@ -81,6 +85,11 @@ export async function getGrammarRule(ruleName: string): Promise<GrammarResponse>
 // Correct text for grammar
 export async function correctGrammar(text: string): Promise<GrammarResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar editor, analyze and correct the following text:
@@ -95,24 +104,24 @@ Please provide:
 
 Be professional and helpful in your response.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatGrammarText(output as string),
+      result: formatGrammarText(response.output as string),
       error: undefined
     };
   } catch (err) {
@@ -127,6 +136,11 @@ Be professional and helpful in your response.`;
 // Get detailed explanation
 export async function explainGrammar(text: string): Promise<GrammarResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, provide a detailed explanation of the grammar in this sentence:
@@ -142,24 +156,24 @@ Please explain:
 
 Be clear and educational.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatGrammarText(output as string),
+      result: formatGrammarText(response.output as string),
       error: undefined
     };
   } catch (err) {
@@ -174,6 +188,11 @@ Be clear and educational.`;
 // Generate grammar exercise
 export async function generateGrammarExercise(topic: string, level: string): Promise<GrammarResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = grammarSdk.model("openai/gpt-4o");
     
     const prompt = `As a professional English grammar teacher, create a grammar exercise for ${level} level students on the topic: "${topic}"
@@ -186,24 +205,24 @@ Please provide:
 
 Make it educational and helpful.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatGrammarText(output as string),
+      result: formatGrammarText(response.output as string),
       error: undefined
     };
   } catch (err) {

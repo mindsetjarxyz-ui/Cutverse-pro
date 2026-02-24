@@ -57,7 +57,6 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onInput={(e) => setInput((e.target as HTMLTextAreaElement).value)}
               placeholder="Enter your grammar question here..."
               rows={4}
               className="w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-vertical"
@@ -76,7 +75,7 @@ export function GrammarTool({ toolId }: GrammarToolProps) {
                   Getting Answer...
                 </>
               ) : (
-                'Get Answer'
+                'Generate (1 ad for every 3 generations)'
               )}
             </Button>
             <Button

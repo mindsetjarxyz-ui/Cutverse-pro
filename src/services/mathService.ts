@@ -3,6 +3,7 @@
 // Supports English and Bangla
 
 import Bytez from "bytez.js";
+import { checkAndUpdateAdCounter, openAdInNewTab } from "./adService";
 
 const MATH_API_KEY = "3209a84492b05d6d57bc71d6e56d455d";
 
@@ -52,6 +53,11 @@ function getLanguageInstruction(language: string): string {
 // Solve math problem
 export async function solveMathProblem(question: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = mathSdk.model("openai/gpt-4o");
     
     // Auto-detect language if requested
@@ -77,25 +83,25 @@ Please provide:
 
 Be clear, professional, and educational. Show all working and calculations.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
         language: targetLanguage,
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatMathText(output as string),
+      result: formatMathText(response.output as string),
       language: targetLanguage,
       error: undefined
     };
@@ -112,6 +118,11 @@ Be clear, professional, and educational. Show all working and calculations.`;
 // Explain math concept
 export async function explainMathConcept(concept: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = mathSdk.model("openai/gpt-4o");
     
     let targetLanguage = language;
@@ -137,25 +148,25 @@ Please provide:
 
 Be thorough, clear, and educational.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
         language: targetLanguage,
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatMathText(output as string),
+      result: formatMathText(response.output as string),
       language: targetLanguage,
       error: undefined
     };
@@ -172,6 +183,11 @@ Be thorough, clear, and educational.`;
 // Generate practice problems
 export async function generateMathProblems(topic: string, level: string, language: 'english' | 'bangla' | 'auto' = 'auto'): Promise<MathResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = mathSdk.model("openai/gpt-4o");
     
     let targetLanguage = language;
@@ -194,25 +210,25 @@ Please provide:
 
 Make them challenging but educational.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
         language: targetLanguage,
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatMathText(output as string),
+      result: formatMathText(response.output as string),
       language: targetLanguage,
       error: undefined
     };
@@ -229,6 +245,11 @@ Make them challenging but educational.`;
 // Quick calculation
 export async function quickMathSolve(question: string): Promise<MathResponse> {
   try {
+    const { shouldShowAd } = checkAndUpdateAdCounter();
+    if (shouldShowAd) {
+      openAdInNewTab();
+    }
+
     const model = mathSdk.model("openai/gpt-4o");
     
     const targetLanguage = detectLanguage(question);
@@ -239,25 +260,25 @@ Problem: "${question}"
 
 Just give the answer with 2-3 lines of working. Keep it concise.`;
 
-    const { error, output } = await model.run([
+    const response = await model.run([
       {
         role: "user",
         content: prompt
       }
     ]);
 
-    if (error) {
+    if (response.error) {
       return {
         success: false,
         result: '',
         language: targetLanguage,
-        error: `Error: ${error}`
+        error: `API Error: ${response.error}`
       };
     }
 
     return {
       success: true,
-      result: formatMathText(output as string),
+      result: formatMathText(response.output as string),
       language: targetLanguage,
       error: undefined
     };
