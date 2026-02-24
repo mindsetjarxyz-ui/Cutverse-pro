@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { ResultBox } from '@/components/ui/ResultBox';
 import { generateText } from '@/services/ai';
 import { classOptions } from '@/data/tools';
+import { GrammarToolWrapper } from './GrammarTool';
+import { MathToolWrapper } from './MathTool';
 
 interface StudentToolProps {
   toolId: string;
@@ -701,6 +703,10 @@ export function StudentToolWrapper({ toolId }: StudentToolProps) {
       return <StoryGenerator />;
     case 'ai-humanizer':
       return <AIHumanizer />;
+    case 'easy-grammar':
+      return <GrammarToolWrapper toolId={toolId} />;
+    case 'ai-math-solver':
+      return <MathToolWrapper toolId={toolId} />;
     default:
       return <div className="text-slate-400">Tool not found</div>;
   }

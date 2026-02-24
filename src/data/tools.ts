@@ -20,7 +20,9 @@ import {
   Instagram,
   UserCheck,
   Music,
-  LucideIcon
+  LucideIcon,
+  BookMarked,
+  Calculator
 } from 'lucide-react';
 
 export interface Tool {
@@ -108,6 +110,20 @@ export const tools: Tool[] = [
     title: 'AI Humanizer',
     description: 'Make AI-generated text sound more natural and human-written',
     icon: UserCheck,
+    category: 'student'
+  },
+  {
+    id: 'easy-grammar',
+    title: '✨ GrammarGenius',
+    description: 'Learn grammar rules, write flawlessly, and master English with AI assistance',
+    icon: BookMarked,
+    category: 'student'
+  },
+  {
+    id: 'ai-math-solver',
+    title: '🧮 MathMaster AI',
+    description: 'Solve math problems in English or Bangla with detailed step-by-step solutions',
+    icon: Calculator,
     category: 'student'
   },
   
